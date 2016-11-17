@@ -10,6 +10,7 @@ import { filterHelperArgs, filterHelper } from './helpers/filter';
 import { sortHelperArgs, sortHelper } from './helpers/sort';
 import toDottedObject from '../utils/toDottedObject';
 import typeStorage from '../typeStorage';
+import { makeProtection } from './helpers/auth';
 import type {
   MongooseModelT,
   ExtendedResolveParams,
@@ -75,7 +76,7 @@ export default function updateMany(
         ...(opts && opts.limit),
       }),
     },
-    resolve: (resolveParams: ExtendedResolveParams) => {
+    resolve: makeProtection((resolveParams: ExtendedResolveParams) => {
       const recordData = (resolveParams.args && resolveParams.args.record) || {};
 
       if (!(typeof recordData === 'object')
@@ -110,7 +111,7 @@ export default function updateMany(
 
           return Promise.reject(res);
         });
-    },
+    }),
   });
 
   return resolver;

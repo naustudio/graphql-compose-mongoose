@@ -4,6 +4,7 @@ import { GraphQLNonNull } from 'graphql';
 import { Resolver, TypeComposer } from 'graphql-compose';
 import GraphQLMongoID from '../types/mongoid';
 import { projectionHelper } from './helpers/projection';
+import { makeProtection } from './helpers/auth';
 import type {
   MongooseModelT,
   ExtendedResolveParams,
@@ -36,7 +37,7 @@ export default function findById(
         type: new GraphQLNonNull(GraphQLMongoID),
       },
     },
-    resolve: (resolveParams: ExtendedResolveParams) => {
+    resolve: makeProtection((resolveParams: ExtendedResolveParams) => {
       const args = resolveParams.args || {};
 
       if (args._id) {
@@ -45,6 +46,6 @@ export default function findById(
         return resolveParams.query.exec();
       }
       return Promise.resolve(null);
-    },
+    }),
   });
 }

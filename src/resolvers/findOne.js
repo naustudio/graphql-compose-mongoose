@@ -6,6 +6,7 @@ import { skipHelperArgs, skipHelper } from './helpers/skip';
 import { filterHelperArgs, filterHelper } from './helpers/filter';
 import { sortHelperArgs, sortHelper } from './helpers/sort';
 import { projectionHelper } from './helpers/projection';
+import { makeProtection } from './helpers/auth';
 import type {
   MongooseModelT,
   ExtendedResolveParams,
@@ -44,7 +45,7 @@ export default function findOne(
         ...(opts && opts.sort),
       }),
     },
-    resolve: (resolveParams : ExtendedResolveParams) => {
+    resolve: makeProtection((resolveParams : ExtendedResolveParams) => {
       resolveParams.query = model.findOne({}); // eslint-disable-line
       filterHelper(resolveParams);
       skipHelper(resolveParams);
@@ -52,6 +53,6 @@ export default function findOne(
       projectionHelper(resolveParams);
 
       return resolveParams.query.exec();
-    },
+    }),
   });
 }

@@ -8,6 +8,7 @@ import typeStorage from '../typeStorage';
 import { filterHelperArgs, filterHelper } from './helpers/filter';
 import { sortHelperArgs, sortHelper } from './helpers/sort';
 import { projectionHelper } from './helpers/projection';
+import { makeProtection } from './helpers/auth';
 import type {
   MongooseModelT,
   ExtendedResolveParams,
@@ -68,7 +69,7 @@ export default function removeOne(
         ...(opts && opts.sort),
       }),
     },
-    resolve: (resolveParams: ExtendedResolveParams) => {
+    resolve: makeProtection((resolveParams: ExtendedResolveParams) => {
       resolveParams.query = model.findOneAndRemove({});
       filterHelper(resolveParams);
       sortHelper(resolveParams);
@@ -89,7 +90,7 @@ export default function removeOne(
 
           return null;
         });
-    },
+    }),
   });
 
   return resolver;

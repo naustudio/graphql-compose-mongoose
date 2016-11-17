@@ -7,7 +7,7 @@ import { recordHelperArgs } from './helpers/record';
 import findById from './findById';
 import GraphQLMongoID from '../types/mongoid';
 import typeStorage from '../typeStorage';
-
+import { makeProtection } from './helpers/auth';
 import type {
   MongooseModelT,
   ExtendedResolveParams,
@@ -69,7 +69,7 @@ export default function updateById(
         ...(opts && opts.record),
       }),
     },
-    resolve: (resolveParams: ExtendedResolveParams) => {
+    resolve: makeProtection((resolveParams: ExtendedResolveParams) => {
       const recordData = (resolveParams.args && resolveParams.args.record) || {};
 
       if (!(typeof recordData === 'object')) {
@@ -120,7 +120,7 @@ export default function updateById(
 
           return null;
         });
-    },
+    }),
   });
 
   return resolver;

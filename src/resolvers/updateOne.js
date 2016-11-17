@@ -10,7 +10,7 @@ import { sortHelperArgs } from './helpers/sort';
 import findOne from './findOne';
 import GraphQLMongoID from '../types/mongoid';
 import typeStorage from '../typeStorage';
-
+import { makeProtection } from './helpers/auth';
 import type {
   MongooseModelT,
   ExtendedResolveParams,
@@ -81,7 +81,7 @@ export default function updateOne(
       }),
       ...skipHelperArgs(),
     },
-    resolve: (resolveParams: ExtendedResolveParams) => {
+    resolve: makeProtection((resolveParams: ExtendedResolveParams) => {
       const recordData = (resolveParams.args && resolveParams.args.record) || null;
       const filterData = (resolveParams.args && resolveParams.args.filter) || {};
 
@@ -123,7 +123,7 @@ export default function updateOne(
 
           return null;
         });
-    },
+    }),
   });
 
   return resolver;

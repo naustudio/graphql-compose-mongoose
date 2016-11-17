@@ -4,6 +4,7 @@
 import { GraphQLInt } from 'graphql';
 import { Resolver, TypeComposer } from 'graphql-compose';
 import { filterHelperArgs, filterHelper } from './helpers/filter';
+import { makeProtection } from './helpers/auth';
 import type {
   MongooseModelT,
   ExtendedResolveParams,
@@ -37,10 +38,10 @@ export default function count(
         ...(opts && opts.filter),
       }),
     },
-    resolve: (resolveParams : ExtendedResolveParams) => {
+    resolve: makeProtection((resolveParams : ExtendedResolveParams) => {
       resolveParams.query = model.find();
       filterHelper(resolveParams);
       return resolveParams.query.count().exec();
-    },
+    }),
   });
 }

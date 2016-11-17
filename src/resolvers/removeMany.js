@@ -5,7 +5,7 @@ import { GraphQLObjectType, GraphQLInt } from 'graphql';
 import { Resolver, TypeComposer } from 'graphql-compose';
 import { filterHelperArgs, filterHelper } from './helpers/filter';
 import typeStorage from '../typeStorage';
-
+import { makeProtection } from './helpers/auth';
 import type {
   MongooseModelT,
   ExtendedResolveParams,
@@ -59,7 +59,7 @@ export default function removeMany(
         ...(opts && opts.filter),
       }),
     },
-    resolve: (resolveParams: ExtendedResolveParams) => {
+    resolve: makeProtection((resolveParams: ExtendedResolveParams) => {
       const filterData = (resolveParams.args && resolveParams.args.filter) || {};
 
       if (!(typeof filterData === 'object')
@@ -89,7 +89,7 @@ export default function removeMany(
 
           return Promise.reject(res);
         });
-    },
+    }),
   });
 
   return resolver;

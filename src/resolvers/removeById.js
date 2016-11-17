@@ -9,6 +9,7 @@ import { Resolver, TypeComposer } from 'graphql-compose';
 import { projectionHelper } from './helpers/projection';
 import GraphQLMongoID from '../types/mongoid';
 import typeStorage from '../typeStorage';
+import { makeProtection } from './helpers/auth';
 import type {
   MongooseModelT,
   ExtendedResolveParams,
@@ -64,7 +65,7 @@ export default function removeById(
         type: new GraphQLNonNull(GraphQLMongoID),
       },
     },
-    resolve: (resolveParams: ExtendedResolveParams) => {
+    resolve: makeProtection((resolveParams: ExtendedResolveParams) => {
       const args = resolveParams.args || {};
 
       if (!args._id) {
@@ -93,7 +94,7 @@ export default function removeById(
             recordId: args._id,
           };
         });
-    },
+    }),
   });
 
   return resolver;

@@ -8,6 +8,7 @@ import { limitHelperArgs, limitHelper } from './helpers/limit';
 import { filterHelperArgs, filterHelper } from './helpers/filter';
 import { sortHelperArgs, sortHelper } from './helpers/sort';
 import { projectionHelper } from './helpers/projection';
+import { makeProtection } from './helpers/auth';
 import type {
   MongooseModelT,
   ExtendedResolveParams,
@@ -49,7 +50,7 @@ export default function findMany(
         ...(opts && opts.sort),
       }),
     },
-    resolve: (resolveParams : ExtendedResolveParams) => {
+    resolve: makeProtection((resolveParams : ExtendedResolveParams) => {
       resolveParams.query = model.find();
       filterHelper(resolveParams);
       skipHelper(resolveParams);
@@ -57,6 +58,6 @@ export default function findMany(
       sortHelper(resolveParams);
       projectionHelper(resolveParams);
       return resolveParams.query.exec();
-    },
+    }),
   });
 }

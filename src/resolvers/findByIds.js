@@ -7,6 +7,7 @@ import GraphQLMongoID from '../types/mongoid';
 import { limitHelperArgs, limitHelper } from './helpers/limit';
 import { sortHelperArgs, sortHelper } from './helpers/sort';
 import { projectionHelper } from './helpers/projection';
+import { makeProtection } from './helpers/auth';
 import type {
   MongooseModelT,
   ExtendedResolveParams,
@@ -46,7 +47,7 @@ export default function findByIds(
         ...(opts && opts.sort),
       }),
     },
-    resolve: (resolveParams : ExtendedResolveParams) => {
+    resolve: makeProtection((resolveParams : ExtendedResolveParams) => {
       const args = resolveParams.args || {};
 
       if (!Array.isArray(args._ids)) {
@@ -65,6 +66,6 @@ export default function findByIds(
       limitHelper(resolveParams);
       sortHelper(resolveParams);
       return resolveParams.query.exec();
-    },
+    }),
   });
 }

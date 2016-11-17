@@ -6,6 +6,7 @@ import { Resolver, TypeComposer } from 'graphql-compose';
 import { recordHelperArgs } from './helpers/record';
 import typeStorage from '../typeStorage';
 import GraphQLMongoID from '../types/mongoid';
+import { makeProtection } from './helpers/auth';
 import type {
   MongooseModelT,
   ExtendedResolveParams,
@@ -59,7 +60,7 @@ export default function createOne(
         ...(opts && opts.record),
       }),
     },
-    resolve: (resolveParams: ExtendedResolveParams) => {
+    resolve: makeProtection((resolveParams: ExtendedResolveParams) => {
       const recordData = (resolveParams.args && resolveParams.args.record) || {};
 
       if (!(typeof recordData === 'object')
@@ -90,7 +91,7 @@ export default function createOne(
 
           return null;
         });
-    },
+    }),
   });
 
   return resolver;
