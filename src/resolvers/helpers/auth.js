@@ -3,10 +3,10 @@
  */
 const makeProtection = function makeProtection(func) {
 	return function (resolveParams) {
-			const context = resolveParams.context;
+			const request = resolveParams.info.rootValue && resolveParams.info.rootValue.request;
 			const promise = new Promise(function (resolve, reject) {
-				if (context && context.authorize) {
-					const authorizePromise = context.authorize(resolveParams);
+				if (request && request.authorize) {
+					const authorizePromise = request.authorize(resolveParams);
 					authorizePromise.then((passed) => {
 						if (passed) {
 							let result = func(resolveParams);
