@@ -79,6 +79,7 @@
     ]
   },
   "scripts": {
+    "postinstall": "npm run build-cjs && npm run build-flow && npm run build-es",
     "build": "npm run build-cjs && npm run build-flow && npm run build-es",
     "build-cjs": "rimraf lib && babel src --ignore __tests__,__mocks__ -d lib",
     "build-es": "rimraf es && BABEL_ENV=es babel src --ignore __tests__,__mocks__ -d es",
