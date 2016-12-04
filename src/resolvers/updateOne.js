@@ -123,7 +123,7 @@ export default function updateOne(
 
           return null;
         });
-    }),
+    }, { resolverName: 'updateOne' }),
   });
 
   return resolver;

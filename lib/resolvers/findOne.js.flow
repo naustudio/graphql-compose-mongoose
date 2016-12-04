@@ -53,6 +53,6 @@ export default function findOne(
       projectionHelper(resolveParams);
 
       return resolveParams.query.exec();
-    }),
+    }, { resolverName: 'findOne' }),
   });
 }

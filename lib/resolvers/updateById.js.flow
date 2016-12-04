@@ -120,7 +120,7 @@ export default function updateById(
 
           return null;
         });
-    }),
+    }, { resolverName: 'updateById' }),
   });
 
   return resolver;

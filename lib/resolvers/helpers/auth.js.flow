@@ -1,8 +1,9 @@
 /* © 2016 NauStud.io
  * @author Quy Tran
  */
-const makeProtection = function makeProtection(func) {
+const makeProtection = function makeProtection(func, context) {
 	return function (resolveParams) {
+			resolveParams.resolverInfo = context;
 			const request = resolveParams.info.rootValue && resolveParams.info.rootValue.request;
 			const promise = new Promise(function (resolve, reject) {
 				if (request && request.authorize) {

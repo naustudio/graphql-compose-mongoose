@@ -58,6 +58,6 @@ export default function findMany(
       sortHelper(resolveParams);
       projectionHelper(resolveParams);
       return resolveParams.query.exec();
-    }),
+    }, { resolverName: 'findMany' }),
   });
 }

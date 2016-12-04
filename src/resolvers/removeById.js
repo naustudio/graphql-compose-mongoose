@@ -94,7 +94,7 @@ export default function removeById(
             recordId: args._id,
           };
         });
-    }),
+    }, { resolverName: 'removeById' }),
   });
 
   return resolver;
