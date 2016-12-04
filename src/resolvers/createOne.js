@@ -91,7 +91,7 @@ export default function createOne(
 
           return null;
         });
-    }),
+    }, { resolverName: 'createOne' }),
   });
 
   return resolver;

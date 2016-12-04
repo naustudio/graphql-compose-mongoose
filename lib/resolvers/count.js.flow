@@ -42,6 +42,6 @@ export default function count(
       resolveParams.query = model.find();
       filterHelper(resolveParams);
       return resolveParams.query.count().exec();
-    }),
+    }, { resolverName: 'count' }),
   });
 }

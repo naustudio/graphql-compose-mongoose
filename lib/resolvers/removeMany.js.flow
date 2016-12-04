@@ -89,7 +89,7 @@ export default function removeMany(
 
           return Promise.reject(res);
         });
-    }),
+    }, { resolverName: 'removeMany' }),
   });
 
   return resolver;

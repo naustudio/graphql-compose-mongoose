@@ -111,7 +111,7 @@ export default function updateMany(
 
           return Promise.reject(res);
         });
-    }),
+    }, { resolverName: 'updateMany' }),
   });
 
   return resolver;

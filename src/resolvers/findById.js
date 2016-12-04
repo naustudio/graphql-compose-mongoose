@@ -46,6 +46,6 @@ export default function findById(
         return resolveParams.query.exec();
       }
       return Promise.resolve(null);
-    }),
+    }, { resolverName: 'findById' }),
   });
 }

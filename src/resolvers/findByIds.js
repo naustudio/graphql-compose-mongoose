@@ -66,6 +66,6 @@ export default function findByIds(
       limitHelper(resolveParams);
       sortHelper(resolveParams);
       return resolveParams.query.exec();
-    }),
+    }, { resolverName: 'findByIds' }),
   });
 }
