@@ -3,7 +3,8 @@
  */
 const makeProtection = function makeProtection(func, context) {
 	return function (resolveParams) {
-			resolveParams.resolverInfo = context;
+			resolveParams.resolverInfos = resolveParams.resolverInfos || [];
+			resolveParams.resolverInfos.push(context);
 			const request = resolveParams.info.rootValue && resolveParams.info.rootValue.request;
 			const promise = new Promise(function (resolve, reject) {
 				if (request && request.authorize) {
