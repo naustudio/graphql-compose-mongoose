@@ -90,7 +90,7 @@ export default function removeOne(
 
           return null;
         });
-    }, { resolverName: 'count' }),
+    }, { resolverName: 'removeOne' }),
   });
 
   return resolver;
