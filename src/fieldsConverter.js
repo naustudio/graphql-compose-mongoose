@@ -127,6 +127,11 @@ export function convertModelToGraphQL(
   model: MongooseModelT | MongoosePseudoModelT,
   typeName: string
 ): TypeComposer {
+  // if model already has generated TypeComposer early, then return it
+  if (model.schema && model.schema._gqcTypeComposer instanceof TypeComposer) {
+    return model.schema._gqcTypeComposer;
+  }
+
   if (!typeName) {
     throw new Error('You provide empty name for type. '
     + '`name` argument should be non-empty string.');
@@ -153,6 +158,20 @@ export function convertModelToGraphQL(
       type: convertFieldToGraphQL(mongooseField, typeName),
       description: _getFieldDescription(mongooseField),
     };
+
+    if (deriveComplexType(mongooseField) === ComplexTypes.EMBEDDED) {
+      // https://github.com/nodkz/graphql-compose-mongoose/issues/7
+      graphqlFields[fieldName].resolve = (source) => {
+        if (source) {
+          if (source.toObject) {
+            const obj = source.toObject();
+            return obj[fieldName];
+          }
+          return source[fieldName];
+        }
+        return null;
+      };
+    }
   });
 
   typeComposer.addFields(graphqlFields);
