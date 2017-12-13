@@ -108,7 +108,7 @@ export default function updateOne(
         .then(doc => {
           if (recordData) {
             doc.set(recordData);
-            return doc.save();
+            return doc.save(resolveParams);
           }
           return doc;
         })
