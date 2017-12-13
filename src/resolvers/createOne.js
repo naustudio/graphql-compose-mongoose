@@ -80,7 +80,7 @@ export default function createOne(
           }
           return doc;
         })
-        .then(doc => doc.save())
+        .then(doc => doc.save(resolveParams))
         .then(record => {
           if (record) {
             return {
